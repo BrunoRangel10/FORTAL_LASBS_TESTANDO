@@ -1,0 +1,122 @@
+[gd_scene load_steps=25 format=2]
+
+[ext_resource path="res://assets/personagem/naruto_novo/parado/1_1.png" type="Texture" id=1]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_8.png" type="Texture" id=2]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_4.png" type="Texture" id=3]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_7.png" type="Texture" id=4]
+[ext_resource path="res://assets/personagem/naruto_novo/pulando/sprite_5.png" type="Texture" id=5]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_5.png" type="Texture" id=6]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_2.png" type="Texture" id=7]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_6.png" type="Texture" id=8]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_9.png" type="Texture" id=9]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_1.png" type="Texture" id=10]
+[ext_resource path="res://assets/personagem/naruto_novo/correndo/sprite_strip9_3.png" type="Texture" id=11]
+[ext_resource path="res://scripts/naruto_player.gd" type="Script" id=12]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_1.png" type="Texture" id=13]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_2.png" type="Texture" id=14]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_3.png" type="Texture" id=15]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_5.png" type="Texture" id=16]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_6.png" type="Texture" id=17]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_4.png" type="Texture" id=18]
+[ext_resource path="res://assets/personagem/naruto_novo/ataque1/1_7.png" type="Texture" id=19]
+[ext_resource path="res://sound/jump1.ogg" type="AudioStream" id=20]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "morrendo",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 18 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 19 ) ],
+"loop": true,
+"name": "atacando",
+"speed": 10.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": true,
+"name": "pulando",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "parado",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 7 ), ExtResource( 11 ), ExtResource( 3 ), ExtResource( 6 ), ExtResource( 8 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 9 ) ],
+"loop": true,
+"name": "correndo",
+"speed": 10.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 12.9317, 22.1235 )
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 17.6087, 17.1709 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 0.704001, 0.051636 )
+
+[node name="Player" type="KinematicBody2D" groups=["PLAYER"]]
+position = Vector2( 522, 322 )
+script = ExtResource( 12 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+position = Vector2( 2, 0 )
+frames = SubResource( 1 )
+animation = "correndo"
+frame = 6
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( 2.52521, -2.125 )
+scale = Vector2( 0.578021, 0.943568 )
+shape = SubResource( 4 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 2, -5 )
+current = true
+zoom = Vector2( 0.9, 0.9 )
+limit_top = -1000
+limit_bottom = 1000
+smoothing_enabled = true
+smoothing_speed = 3.0
+
+[node name="dano" type="Area2D" parent="."]
+position = Vector2( -2, -11 )
+rotation = -0.00289763
+scale = Vector2( 0.776154, 1.19197 )
+collision_layer = 4
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="dano"]
+position = Vector2( 5.76794, 7.67139 )
+rotation = -9.35921e-10
+scale = Vector2( 0.621929, 1.06841 )
+shape = SubResource( 5 )
+
+[node name="pes" type="Area2D" parent="."]
+visible = false
+position = Vector2( 1, 32 )
+scale = Vector2( 15.8891, -6.96692 )
+collision_layer = 4
+collision_mask = 4
+
+[node name="shape" type="CollisionShape2D" parent="pes"]
+position = Vector2( 0.0943985, -0.290092 )
+scale = Vector2( 0.938677, 4.03846 )
+shape = SubResource( 3 )
+
+[node name="kunai_point" type="Position2D" parent="."]
+position = Vector2( 12, -3 )
+
+[node name="jump" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 20 )
+volume_db = -5.0
+
+[connection signal="animation_finished" from="Sprite" to="." method="_on_Sprite_animation_finished"]
+[connection signal="body_entered" from="dano" to="." method="_on_dano_body_entered"]
+[connection signal="body_entered" from="pes" to="." method="_on_pes_body_entered"]

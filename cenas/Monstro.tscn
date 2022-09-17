@@ -1,0 +1,110 @@
+[gd_scene load_steps=19 format=2]
+
+[ext_resource path="res://assets/personagem/male/Walk (9).png" type="Texture" id=1]
+[ext_resource path="res://assets/personagem/male/Walk (10).png" type="Texture" id=2]
+[ext_resource path="res://assets/personagem/male/Walk (6).png" type="Texture" id=3]
+[ext_resource path="res://assets/personagem/male/Walk (7).png" type="Texture" id=4]
+[ext_resource path="res://assets/personagem/male/Walk (8).png" type="Texture" id=5]
+[ext_resource path="res://assets/personagem/male/Walk (5).png" type="Texture" id=6]
+[ext_resource path="res://assets/personagem/male/Walk (3).png" type="Texture" id=7]
+[ext_resource path="res://assets/personagem/male/Walk (1).png" type="Texture" id=8]
+[ext_resource path="res://assets/personagem/male/Walk (2).png" type="Texture" id=9]
+[ext_resource path="res://assets/personagem/male/Walk (4).png" type="Texture" id=10]
+[ext_resource path="res://scripts/Monstro.gd" type="Script" id=11]
+[ext_resource path="res://assets/personagem/male/Attack (1).png" type="Texture" id=12]
+[ext_resource path="res://sound/pepSound2.ogg" type="AudioStream" id=13]
+
+[sub_resource type="SpriteFrames" id=1]
+animations = [ {
+"frames": [ ExtResource( 12 ) ],
+"loop": true,
+"name": "parado",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 8 ), ExtResource( 9 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 6 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 1 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "andando",
+"speed": 8.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 11.1867, 0.743079 )
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ) ]
+}
+
+[sub_resource type="Animation" id=6]
+resource_name = "idle"
+
+[sub_resource type="Animation" id=4]
+resource_name = "morrer"
+tracks/0/type = "value"
+tracks/0/path = NodePath("Sprite:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5, 1 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 1 ), Color( 0.980392, 0.0588235, 0.0588235, 1 ), Color( 1, 1, 1, 0 ) ]
+}
+tracks/1/type = "method"
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 1 ),
+"transitions": PoolRealArray( 1 ),
+"values": [ {
+"args": [  ],
+"method": "morrer"
+} ]
+}
+
+[node name="Monstro" type="KinematicBody2D" groups=["Inimigos"]]
+position = Vector2( 476, 310 )
+collision_layer = 4
+script = ExtResource( 11 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="AnimatedSprite" parent="."]
+scale = Vector2( 0.1, 0.1 )
+frames = SubResource( 1 )
+animation = "parado"
+
+[node name="Shape" type="CollisionShape2D" parent="."]
+position = Vector2( -3, 2 )
+scale = Vector2( 0.410293, 27.2515 )
+shape = SubResource( 5 )
+
+[node name="anim" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/idle = SubResource( 6 )
+anims/morrer = SubResource( 4 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+position = Vector2( 2, 3 )
+scale = Vector2( 0.532811, 0.856231 )
+enabled = true
+cast_to = Vector2( 30, 0 )
+
+[node name="audioMonstro" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 13 )

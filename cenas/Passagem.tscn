@@ -1,0 +1,32 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://scripts/Passagem.gd" type="Script" id=1]
+[ext_resource path="res://assets/background/caverna1.png" type="Texture" id=2]
+[ext_resource path="res://sound/level_completed.wav" type="AudioStream" id=3]
+
+[sub_resource type="CapsuleShape2D" id=3]
+radius = 7.99091
+height = 17.9165
+
+[node name="Passagem" type="Area2D" groups=["Passagem"]]
+position = Vector2( 184, 82 )
+scale = Vector2( 1.752, 1.593 )
+z_index = -1
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_group_": true
+}
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -0.0673218, 0 )
+texture = ExtResource( 2 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2( -0.570778, 6.27745 )
+shape = SubResource( 3 )
+
+[node name="victory" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -5.0
+
+[connection signal="body_entered" from="." to="." method="_on_Passagem_body_entered"]
